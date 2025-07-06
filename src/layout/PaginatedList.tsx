@@ -13,13 +13,17 @@ export const PaginatedList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  const fetchUsuarios = async () => {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/usuarios`);
-    const data = await res.json();
-    setUsuarios(data);
-  };
-
   useEffect(() => {
+    const fetchUsuarios = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/usuarios`);
+        const data = await res.json();
+        setUsuarios(data);
+      } catch (error) {
+        console.error("Erro ao buscar usuários:", error);
+      }
+    };
+
     fetchUsuarios();
   }, []);
 
@@ -29,39 +33,40 @@ export const PaginatedList = () => {
   );
 
   const totalPages = Math.ceil(usuarios.length / itemsPerPage);
+  const start = (currentPage - 1) * itemsPerPage + 1;
+  const end = Math.min(currentPage * itemsPerPage, usuarios.length);
 
   return (
-    <div className="bg-white rounded shadow-md overflow-hidden">
-      {paginated.map((u) => (
+    <div className="bg-white rounded-lg shadow overflow-hidden">
+      {paginated.map((usuario) => (
         <UserRow
-          key={u.id}
-          nome={u.nome}
-          email={u.email}
-          tipo_usuario={u.tipo_usuario}
-          onEdit={() => alert(`Editar ${u.nome}`)}
-          onDelete={() => alert(`Excluir ${u.nome}`)}
+          key={usuario.id}
+          nome={usuario.nome}
+          email={usuario.email}
+          tipo_usuario={usuario.tipo_usuario}
+          onEdit={() => alert(`Editar ${usuario.nome}`)}
+          onDelete={() => alert(`Excluir ${usuario.nome}`)}
         />
       ))}
 
-      <div className="flex justify-between items-center p-4 border-t text-sm text-gray-600">
+      <div className="flex justify-between items-center px-5 py-3 bg-gray-50 border-t text-sm text-gray-600">
         <span>
-          Mostrando {paginated.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0} a{" "}
-          {(currentPage - 1) * itemsPerPage + paginated.length} de {usuarios.length} usuários
+          Mostrando {usuarios.length === 0 ? 0 : start} a {end} de {usuarios.length} usuários
         </span>
 
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           <button
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
             disabled={currentPage === 1}
-            className="px-2 py-1 border rounded disabled:opacity-50"
+            className="px-3 py-1 rounded border text-gray-600 hover:bg-gray-100 disabled:opacity-40"
           >
             &lt;
           </button>
-          <span className="px-2 border rounded bg-blue-100 text-blue-600">{currentPage}</span>
+          <span className="px-3 py-1 rounded bg-blue-600 text-white">{currentPage}</span>
           <button
             onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
             disabled={currentPage === totalPages}
-            className="px-2 py-1 border rounded disabled:opacity-50"
+            className="px-3 py-1 rounded border text-gray-600 hover:bg-gray-100 disabled:opacity-40"
           >
             &gt;
           </button>

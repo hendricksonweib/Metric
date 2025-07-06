@@ -13,20 +13,22 @@ export const UserRow = ({ nome, email, tipo_usuario, onEdit, onDelete }: UserRow
   const badgeType = tipo_usuario === "ADMINISTRADOR" ? "admin" : "gestor";
 
   return (
-    <div className="flex items-center justify-between border-b px-4 py-3">
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-          <span className="font-bold text-sm">{nome[0]}</span>
+    <div className="flex items-center justify-between px-5 py-4 border-b hover:bg-gray-50 transition">
+      <div className="flex items-center gap-4">
+        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold">
+          {nome.charAt(0).toUpperCase()}
         </div>
         <div>
-          <p className="font-medium">{nome}</p>
+          <p className="font-medium text-gray-800 leading-tight">{nome}</p>
           <p className="text-sm text-gray-500">Email: {email}</p>
         </div>
-        <Badge text={tipo_usuario} type={badgeType} />
       </div>
-      <div className="flex items-center gap-3">
-        <IconButton type="edit" onClick={onEdit} />
-        <IconButton type="delete" onClick={onDelete} />
+      <div className="flex items-center gap-6">
+        <Badge text={tipo_usuario} type={badgeType} />
+        <div className="flex gap-3">
+          <IconButton type="edit" onClick={onEdit} />
+          <IconButton type="delete" onClick={onDelete} />
+        </div>
       </div>
     </div>
   );
