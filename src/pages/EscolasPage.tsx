@@ -21,6 +21,21 @@ export default function EscolasPage() {
     setReload(true);
   };
 
+  const handleEdit = (id: number) => {
+    setEditId(id);
+    setShowModal(true);
+  };
+
+  const handleFilter = (
+    nome: string,
+    regiao: number | null,
+    grupo: number | null
+  ) => {
+    setSearchNome(nome);
+    setRegiaoId(regiao);
+    setGrupoId(grupo);
+  };
+
   return (
     <>
       <Header />
@@ -35,21 +50,12 @@ export default function EscolasPage() {
           }}
         />
 
-        <SchoolFilter
-          onFilter={(nome, regiao, grupo) => {
-            setSearchNome(nome);
-            setRegiaoId(regiao);
-            setGrupoId(grupo);
-          }}
-        />
+        <SchoolFilter onFilter={handleFilter} />
 
         <SchoolList
           reload={reload}
           onReloadDone={() => setReload(false)}
-          onEdit={(id) => {
-            setEditId(id);
-            setShowModal(true);
-          }}
+          onEdit={handleEdit}
           searchNome={searchNome}
           regiaoId={regiaoId}
           grupoId={grupoId}

@@ -23,10 +23,20 @@ interface Escola {
 interface SchoolListProps {
   reload?: boolean;
   onReloadDone?: () => void;
-  onEdit?: (id: number) => void; 
+  onEdit?: (id: number) => void;
+  searchNome: string;
+  regiaoId: number | null;
+  grupoId: number | null;
 }
 
-export const SchoolList = ({ reload, onReloadDone, onEdit }: SchoolListProps) => {
+export const SchoolList = ({
+  reload,
+  onReloadDone,
+  onEdit,
+  searchNome,
+  regiaoId,
+  grupoId,
+}: SchoolListProps) => {
   const [escolas, setEscolas] = useState<Escola[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -34,7 +44,18 @@ export const SchoolList = ({ reload, onReloadDone, onEdit }: SchoolListProps) =>
 
   const fetchEscolas = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/escolas?page=${page}`);
+      const queryParams = new URLSearchParams({
+        page: String(page),
+      });
+
+      if (searchNome.trim() !== "") queryParams.append("nome", searchNome);
+      if (regiaoId !== null) queryParams.append("regiaoId", String(regiaoId));
+      if (grupoId !== null) queryParams.append("grupoId", String(grupoId));
+
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/escolas?${queryParams.toString()}`
+      );
+
       const data = await res.json();
       setEscolas(data.data || []);
       setTotalPages(data.totalPages || 1);
@@ -46,7 +67,7 @@ export const SchoolList = ({ reload, onReloadDone, onEdit }: SchoolListProps) =>
 
   useEffect(() => {
     fetchEscolas();
-  }, [page]);
+  }, [page, searchNome, regiaoId, grupoId]);
 
   useEffect(() => {
     if (reload) {
@@ -55,8 +76,8 @@ export const SchoolList = ({ reload, onReloadDone, onEdit }: SchoolListProps) =>
   }, [reload, onReloadDone]);
 
   const handleDelete = async (id: number) => {
-    const confirm = window.confirm("Deseja excluir esta escola?");
-    if (!confirm) return;
+    const confirmDelete = window.confirm("Deseja excluir esta escola?");
+    if (!confirmDelete) return;
 
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/escolas/${id}`, {
@@ -96,7 +117,7 @@ export const SchoolList = ({ reload, onReloadDone, onEdit }: SchoolListProps) =>
             </div>
           </div>
           <div className="flex gap-3">
-            <IconButton type="edit" onClick={() => onEdit?.(escola.id)} /> {/* ✅ Corrigido aqui */}
+            <IconButton type="edit" onClick={() => onEdit?.(escola.id)} />
             <IconButton type="delete" onClick={() => handleDelete(escola.id)} />
           </div>
         </div>

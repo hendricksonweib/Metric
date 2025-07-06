@@ -38,18 +38,18 @@ export const SchoolFilter = ({ onFilter }: SchoolFilterProps) => {
     fetchGrupos();
   }, []);
 
-  useEffect(() => {
+  const handleFilter = () => {
     onFilter(
       nome.trim(),
       regiaoId !== "" ? regiaoId : null,
       grupoId !== "" ? grupoId : null
     );
-  }, [nome, regiaoId, grupoId]);
+  };
 
   return (
     <div className="bg-white rounded-lg shadow p-4 mb-6">
       <h2 className="text-sm font-semibold text-gray-700 mb-3">Buscar Escolas</h2>
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 items-end">
         <div className="flex items-center w-full md:w-1/2 relative">
           <span className="absolute left-3 text-gray-400">
             <i className="fas fa-search" />
@@ -92,6 +92,13 @@ export const SchoolFilter = ({ onFilter }: SchoolFilterProps) => {
             </option>
           ))}
         </select>
+
+        <button
+          onClick={handleFilter}
+          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+        >
+          Filtrar
+        </button>
       </div>
     </div>
   );
