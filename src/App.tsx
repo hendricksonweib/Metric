@@ -3,6 +3,7 @@ import { LoginPage } from "./pages/Login";
 import { DashboardPage } from "./pages/DashboardPage";
 import { UsuariosPage } from "./pages/UsuariosPage";
 import EscolasPage from "./pages/EscolasPage";
+import TurmasPage from "./pages/TurmasPage";
 function App() {
   return (
     <Routes>
@@ -10,6 +11,7 @@ function App() {
       <Route path="/dashboard" element={<DashboardPage />} />
       <Route path="/usuarios" element={<UsuariosPage />} />
       <Route path="/escolas" element={<EscolasPage />} />
+      <Route path="/turmas" element={<TurmasPage />} />
     </Routes>
   );
 }
