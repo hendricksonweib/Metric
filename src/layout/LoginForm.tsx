@@ -11,7 +11,7 @@ export const LoginForm = () => {
   const { login } = useAuth();
 
   const handleSubmit = async () => {
-    const result = await login({ email, password: senha });
+    const result = await login({ email, senha: senha });
     if (result.success) {
       navigate("/dashboard");
     }

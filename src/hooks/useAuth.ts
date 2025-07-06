@@ -2,14 +2,14 @@ import { useState } from "react";
 
 interface LoginData {
   email: string;
-  password: string;
+  senha: string;
 }
 
 export const useAuth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const login = async ({ email, password }: LoginData) => {
+  const login = async ({ email, senha }: LoginData) => {
     setLoading(true);
     setError(null);
 
@@ -19,7 +19,7 @@ export const useAuth = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }), 
+        body: JSON.stringify({ email, senha }), 
       });
 
       if (!response.ok) {
