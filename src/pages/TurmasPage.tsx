@@ -18,18 +18,22 @@ export default function TurmasPage() {
   const [escolaId, setEscolaId] = useState<number | null>(null);
   const [escolas, setEscolas] = useState<Escola[]>([]);
 
+  // Busca escolas para o select
   useEffect(() => {
-  const fetchEscolas = async () => {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/escolas`);
-    const data = await res.json();
+    const fetchEscolas = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/escolas`);
+        const data = await res.json();
+        const lista = Array.isArray(data) ? data : data.data;
+        setEscolas(Array.isArray(lista) ? lista : []);
+      } catch (err) {
+        console.error("Erro ao buscar escolas", err);
+        setEscolas([]);
+      }
+    };
 
-    const lista = Array.isArray(data) ? data : data.data; 
-
-    setEscolas(Array.isArray(lista) ? lista : []);
-  };
-
-  fetchEscolas();
-}, []);
+    fetchEscolas();
+  }, []);
 
   const handleFilter = () => {
     setReload(true);
@@ -60,33 +64,37 @@ export default function TurmasPage() {
           }}
         />
 
+        {/* 🔵 Filtro com estilo azul unificado */}
         <div className="bg-white rounded-xl shadow-md p-6 mb-6">
           <h2 className="text-base font-semibold text-gray-700 mb-4">Buscar Turmas</h2>
           <div className="flex flex-wrap gap-4 items-end">
             <input
               type="text"
               placeholder="Digite o nome da turma..."
-              className="w-full md:w-1/2 px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-200"
+              className="w-full md:w-1/2 px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
               value={searchNome}
               onChange={(e) => setSearchNome(e.target.value)}
             />
+
             <select
-              className="w-full md:w-1/4 px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-200"
+              className="w-full md:w-1/4 px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
               value={escolaId ?? ""}
               onChange={(e) =>
                 setEscolaId(e.target.value === "" ? null : parseInt(e.target.value))
               }
             >
               <option value="">Todas as escolas</option>
-              {escolas.map((escola) => (
-                <option key={escola.id} value={escola.id}>
-                  {escola.nome}
-                </option>
-              ))}
+              {Array.isArray(escolas) &&
+                escolas.map((escola) => (
+                  <option key={escola.id} value={escola.id}>
+                    {escola.nome}
+                  </option>
+                ))}
             </select>
+
             <button
               onClick={handleFilter}
-              className="bg-green-600 text-white px-5 py-2 rounded-xl hover:bg-green-700 transition-all duration-200"
+              className="bg-blue-600 text-white px-5 py-2 rounded-xl hover:bg-blue-700 transition-all duration-200"
             >
               Filtrar
             </button>
