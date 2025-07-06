@@ -1,7 +1,18 @@
+import { useState } from "react";
 import { PaginatedList } from "../layout/PaginatedList";
 import { Header } from "../components/Header";
 import { PageHeader } from "../ui/PageHeader";
+import { CreateUserModal } from "../components/modals/CreateUserModal"; 
+
 export const UsuariosPage = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [reloadList, setReloadList] = useState(false); 
+
+  const handleSuccess = () => {
+    setShowModal(false);
+    setReloadList(true); 
+  };
+
   return (
     <>
       <Header />
@@ -10,10 +21,17 @@ export const UsuariosPage = () => {
           title="Usuários"
           description="Gerenciamento de usuários do sistema"
           actionLabel="Novo Usuário"
-          onActionClick={() => alert("Abrir modal de cadastro")}
+          onActionClick={() => setShowModal(true)}
         />
-        <PaginatedList />
+        <PaginatedList reload={reloadList} onReloadDone={() => setReloadList(false)} />
       </div>
+
+      {showModal && (
+        <CreateUserModal
+          onClose={() => setShowModal(false)}
+          onSuccess={handleSuccess}
+        />
+      )}
     </>
   );
 };

@@ -10,7 +10,6 @@ type UserRowProps = {
 };
 
 export const UserRow = ({ nome, email, tipo_usuario, onEdit, onDelete }: UserRowProps) => {
-  const badgeType = tipo_usuario === "ADMINISTRADOR" ? "admin" : "gestor";
 
   return (
     <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200 hover:bg-gray-50 transition">
