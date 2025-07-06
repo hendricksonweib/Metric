@@ -83,8 +83,8 @@ export const CreateUserModal = ({ onClose, onSuccess, userId }: CreateUserModalP
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center z-50">
+     <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl w-full max-w-md p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-gray-800">
             {userId ? "Editar Usuário" : "Adicionar Novo Usuário"}
