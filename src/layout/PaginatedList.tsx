@@ -13,7 +13,7 @@ interface PaginatedListProps {
   onReloadDone?: () => void;
 }
 
-export const PaginatedList = ({ reload = false, onReloadDone }: PaginatedListProps) => {
+export const PaginatedList = ({ reload, onReloadDone }: PaginatedListProps) => {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -28,14 +28,31 @@ export const PaginatedList = ({ reload = false, onReloadDone }: PaginatedListPro
     fetchUsuarios();
   }, []);
 
-  // detecta reload externo
   useEffect(() => {
     if (reload) {
-      fetchUsuarios().then(() => {
-        onReloadDone?.(); 
-      });
+      fetchUsuarios().then(() => onReloadDone?.());
     }
-  }, [reload]);
+  }, [reload, onReloadDone]);
+
+  const deleteUsuario = async (id: number) => {
+    const confirm = window.confirm("Tem certeza que deseja excluir este usuário?");
+    if (!confirm) return;
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/usuarios/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Erro ao excluir usuário");
+      }
+
+      setUsuarios((prev) => prev.filter((u) => u.id !== id));
+    } catch (err: any) {
+      alert(err.message || "Erro ao excluir usuário.");
+    }
+  };
 
   const paginated = usuarios.slice(
     (currentPage - 1) * itemsPerPage,
@@ -47,19 +64,17 @@ export const PaginatedList = ({ reload = false, onReloadDone }: PaginatedListPro
   const end = Math.min(currentPage * itemsPerPage, usuarios.length);
 
   return (
-    <>
-      <div className="bg-white rounded-lg shadow-sm overflow-hidden mb-4">
-        {paginated.map((user) => (
-          <UserRow
-            key={user.id}
-            nome={user.nome}
-            email={user.email}
-            tipo_usuario={user.tipo_usuario}
-            onEdit={() => console.log("edit", user.id)}
-            onDelete={() => console.log("delete", user.id)}
-          />
-        ))}
-      </div>
+    <div className="bg-white rounded-lg shadow overflow-hidden">
+      {paginated.map((usuario) => (
+        <UserRow
+          key={usuario.id}
+          nome={usuario.nome}
+          email={usuario.email}
+          tipo_usuario={usuario.tipo_usuario}
+          onEdit={() => alert("Editar não implementado")}
+          onDelete={() => deleteUsuario(usuario.id)} 
+        />
+      ))}
 
       <div className="flex justify-between items-center px-5 py-3 bg-gray-50 border-t text-sm text-gray-600">
         <span>
@@ -84,6 +99,6 @@ export const PaginatedList = ({ reload = false, onReloadDone }: PaginatedListPro
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
