@@ -20,7 +20,12 @@ interface Escola {
   grupo: Grupo;
 }
 
-export const SchoolList = () => {
+interface SchoolListProps {
+  reload?: boolean;
+  onReloadDone?: () => void;
+}
+
+export const SchoolList = ({ reload, onReloadDone }: SchoolListProps) => {
   const [escolas, setEscolas] = useState<Escola[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -42,6 +47,12 @@ export const SchoolList = () => {
     fetchEscolas();
   }, [page]);
 
+  useEffect(() => {
+    if (reload) {
+      fetchEscolas().then(() => onReloadDone?.());
+    }
+  }, [reload, onReloadDone]);
+
   const handleDelete = async (id: number) => {
     const confirm = window.confirm("Deseja excluir esta escola?");
     if (!confirm) return;
@@ -60,7 +71,7 @@ export const SchoolList = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow overflow-hidden">
+    <div className="bg-white rounded-xl shadow overflow-hidden">
       <div className="px-5 py-3 bg-blue-50 border-b border-gray-200 font-semibold text-sm text-gray-800">
         Mostrando página <strong>{page}</strong> de <strong>{totalPages}</strong> - Total: {totalItems} escolas
       </div>
@@ -68,7 +79,7 @@ export const SchoolList = () => {
       {escolas.map((escola) => (
         <div
           key={escola.id}
-          className="flex items-center justify-between px-5 py-4 border-b border-gray-100 hover:bg-gray-50 transition"
+          className="flex items-center justify-between px-5 py-4 border-b border-gray-100 hover:bg-gray-50 transition duration-150"
         >
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xl">
