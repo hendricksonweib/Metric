@@ -23,9 +23,10 @@ interface Escola {
 interface SchoolListProps {
   reload?: boolean;
   onReloadDone?: () => void;
+  onEdit?: (id: number) => void; // ✅ ADICIONADO
 }
 
-export const SchoolList = ({ reload, onReloadDone }: SchoolListProps) => {
+export const SchoolList = ({ reload, onReloadDone, onEdit }: SchoolListProps) => {
   const [escolas, setEscolas] = useState<Escola[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -95,7 +96,7 @@ export const SchoolList = ({ reload, onReloadDone }: SchoolListProps) => {
             </div>
           </div>
           <div className="flex gap-3">
-            <IconButton type="edit" onClick={() => alert("Editar escola " + escola.id)} />
+            <IconButton type="edit" onClick={() => onEdit?.(escola.id)} /> {/* ✅ Corrigido aqui */}
             <IconButton type="delete" onClick={() => handleDelete(escola.id)} />
           </div>
         </div>

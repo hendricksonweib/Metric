@@ -6,10 +6,12 @@ import { CreateSchoolModal } from "../components/modals/CreateSchoolModal";
 
 export default function EscolasPage() {
   const [showModal, setShowModal] = useState(false);
+  const [editId, setEditId] = useState<number | null>(null);
   const [reload, setReload] = useState(false);
 
   const handleSuccess = () => {
     setShowModal(false);
+    setEditId(null);
     setReload(true);
   };
 
@@ -21,16 +23,26 @@ export default function EscolasPage() {
           title="Escolas"
           description="Gerenciamento de escolas"
           actionLabel="Nova Escola"
-          onActionClick={() => setShowModal(true)}
+          onActionClick={() => {
+            setEditId(null); // novo cadastro
+            setShowModal(true);
+          }}
         />
-
-        <SchoolList reload={reload} onReloadDone={() => setReload(false)} />
+        <SchoolList
+          reload={reload}
+          onReloadDone={() => setReload(false)}
+          onEdit={(id) => {
+            setEditId(id);
+            setTimeout(() => setShowModal(true), 0); // edição
+          }}
+        />
       </div>
 
       {showModal && (
         <CreateSchoolModal
           onClose={() => setShowModal(false)}
           onSuccess={handleSuccess}
+          escolaId={editId}
         />
       )}
     </>
