@@ -13,7 +13,7 @@ export const UserRow = ({ nome, email, tipo_usuario, onEdit, onDelete }: UserRow
   const badgeType = tipo_usuario === "ADMINISTRADOR" ? "admin" : "gestor";
 
   return (
-    <div className="flex items-center justify-between px-5 py-4 border-b hover:bg-gray-50 transition">
+    <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200 hover:bg-gray-50 transition">
       <div className="flex items-center gap-4">
         <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold">
           {nome.charAt(0).toUpperCase()}
