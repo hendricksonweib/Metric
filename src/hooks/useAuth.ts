@@ -19,7 +19,7 @@ export const useAuth = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, senha }), 
+        body: JSON.stringify({ email, senha }),
       });
 
       if (!response.ok) {
@@ -27,10 +27,14 @@ export const useAuth = () => {
       }
 
       const data = await response.json();
-      const { token, user } = data;
 
+      const usuario = data.usuario;
+      const token = data.token;
+
+      sessionStorage.setItem("currentUser", JSON.stringify(usuario));
       localStorage.setItem("token", token);
-      return { success: true, user };
+
+      return { success: true, user: usuario };
     } catch (err: any) {
       console.error("Erro no login:", err);
       setError("Credenciais inválidas ou erro no servidor.");

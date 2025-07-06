@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { LogOut, User } from "lucide-react";
+import { LogOut } from "lucide-react";
 
 const navItems = [
   { name: "Dashboard", path: "/dashboard" },
@@ -42,8 +42,12 @@ export const Header = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-sm">{user?.name || "Usuário"}</span>
-          <button onClick={handleLogout} className="flex items-center gap-1 hover:underline">
+          <span className="text-sm">{user?.nome || "Usuário"}</span>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex items-center gap-1 hover:underline focus:outline-none"
+          >
             <LogOut size={16} />
             <span>Sair</span>
           </button>
