@@ -49,8 +49,8 @@ export const SchoolList = ({
       });
 
       if (searchNome.trim() !== "") queryParams.append("nome", searchNome);
-      if (regiaoId !== null) queryParams.append("regiaoId", String(regiaoId));
-      if (grupoId !== null) queryParams.append("grupoId", String(grupoId));
+      if (regiaoId !== null) queryParams.append("regiao_id", String(regiaoId));
+if (grupoId !== null) queryParams.append("grupo_id", String(grupoId));
 
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/api/escolas?${queryParams.toString()}`
