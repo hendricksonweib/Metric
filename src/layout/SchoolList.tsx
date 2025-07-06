@@ -23,7 +23,7 @@ interface Escola {
 interface SchoolListProps {
   reload?: boolean;
   onReloadDone?: () => void;
-  onEdit?: (id: number) => void; // ✅ ADICIONADO
+  onEdit?: (id: number) => void; 
 }
 
 export const SchoolList = ({ reload, onReloadDone, onEdit }: SchoolListProps) => {

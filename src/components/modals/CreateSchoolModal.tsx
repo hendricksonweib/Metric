@@ -16,7 +16,11 @@ interface Grupo {
   nome: string;
 }
 
-export const CreateSchoolModal = ({ onClose, onSuccess, escolaId }: CreateSchoolModalProps) => {
+export const CreateSchoolModal = ({
+  onClose,
+  onSuccess,
+  escolaId,
+}: CreateSchoolModalProps) => {
   const [nome, setNome] = useState("");
   const [regiaoId, setRegiaoId] = useState("");
   const [grupoId, setGrupoId] = useState("");
@@ -27,7 +31,6 @@ export const CreateSchoolModal = ({ onClose, onSuccess, escolaId }: CreateSchool
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Carregar regiões e grupos
   useEffect(() => {
     const fetchRegioes = async () => {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/regioes`);
@@ -45,13 +48,14 @@ export const CreateSchoolModal = ({ onClose, onSuccess, escolaId }: CreateSchool
     fetchGrupos();
   }, []);
 
-  // Carregar dados da escola se for edição
   useEffect(() => {
     if (!escolaId) return;
 
     const fetchEscola = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/escolas/${escolaId}`);
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/escolas/${escolaId}`
+        );
         if (!res.ok) throw new Error("Erro ao buscar escola");
         const data = await res.json();
         setNome(data.nome);
@@ -103,18 +107,25 @@ export const CreateSchoolModal = ({ onClose, onSuccess, escolaId }: CreateSchool
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6">
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center z-50">
+      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl w-full max-w-md p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold text-gray-800">
             {escolaId ? "Editar Escola" : "Adicionar Nova Escola"}
           </h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700 text-lg">×</button>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 text-lg"
+          >
+            ×
+          </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Nome da Escola</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Nome da Escola
+            </label>
             <input
               type="text"
               className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500"
@@ -125,7 +136,9 @@ export const CreateSchoolModal = ({ onClose, onSuccess, escolaId }: CreateSchool
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Região</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Região
+            </label>
             <select
               className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500"
               value={regiaoId}
@@ -142,7 +155,9 @@ export const CreateSchoolModal = ({ onClose, onSuccess, escolaId }: CreateSchool
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Grupo</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Grupo
+            </label>
             <select
               className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500"
               value={grupoId}
