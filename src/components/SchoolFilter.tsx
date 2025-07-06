@@ -11,19 +11,15 @@ interface Grupo {
 }
 
 interface SchoolFilterProps {
-  onFilterChange: (filters: {
-    nome?: string;
-    regiaoId?: number;
-    grupoId?: number;
-  }) => void;
+  onFilter: (nome: string, regiaoId: number | null, grupoId: number | null) => void;
 }
 
-export const SchoolFilter = ({ onFilterChange }: SchoolFilterProps) => {
+export const SchoolFilter = ({ onFilter }: SchoolFilterProps) => {
   const [nome, setNome] = useState("");
   const [regioes, setRegioes] = useState<Regiao[]>([]);
   const [grupos, setGrupos] = useState<Grupo[]>([]);
-  const [regiaoId, setRegiaoId] = useState<number | "">( "");
-  const [grupoId, setGrupoId] = useState<number | "">( "");
+  const [regiaoId, setRegiaoId] = useState<number | "">("");
+  const [grupoId, setGrupoId] = useState<number | "">("");
 
   useEffect(() => {
     const fetchRegioes = async () => {
@@ -43,12 +39,12 @@ export const SchoolFilter = ({ onFilterChange }: SchoolFilterProps) => {
   }, []);
 
   useEffect(() => {
-    onFilterChange({
-      nome: nome.trim() !== "" ? nome : undefined,
-      regiaoId: regiaoId !== "" ? regiaoId : undefined,
-      grupoId: grupoId !== "" ? grupoId : undefined,
-    });
-  }, [nome, regiaoId, grupoId, onFilterChange]);
+    onFilter(
+      nome.trim(),
+      regiaoId !== "" ? regiaoId : null,
+      grupoId !== "" ? grupoId : null
+    );
+  }, [nome, regiaoId, grupoId]);
 
   return (
     <div className="bg-white rounded-lg shadow p-4 mb-6">
