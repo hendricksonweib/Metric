@@ -40,7 +40,7 @@ export const CreateUserModal = ({ onClose, onSuccess }: CreateUserModalProps) =>
         throw new Error(data.message || "Erro ao criar usuário");
       }
 
-      if (onSuccess) onSuccess();
+      onSuccess?.();
       onClose();
     } catch (err: any) {
       setError(err.message);
@@ -51,18 +51,18 @@ export const CreateUserModal = ({ onClose, onSuccess }: CreateUserModalProps) =>
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">Adicionar Novo Usuário</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">×</button>
+          <h2 className="text-xl font-semibold text-gray-800">Adicionar Novo Usuário</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-700 text-xl">×</button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1">Nome</label>
+            <label className="block text-sm font-medium mb-1 text-gray-700">Nome</label>
             <input
               type="text"
-              className="w-full border rounded px-3 py-2"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
               required
@@ -70,10 +70,10 @@ export const CreateUserModal = ({ onClose, onSuccess }: CreateUserModalProps) =>
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
+            <label className="block text-sm font-medium mb-1 text-gray-700">Email</label>
             <input
               type="email"
-              className="w-full border rounded px-3 py-2"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -81,10 +81,10 @@ export const CreateUserModal = ({ onClose, onSuccess }: CreateUserModalProps) =>
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Senha</label>
+            <label className="block text-sm font-medium mb-1 text-gray-700">Senha</label>
             <input
               type="password"
-              className="w-full border rounded px-3 py-2"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
               required
@@ -92,9 +92,9 @@ export const CreateUserModal = ({ onClose, onSuccess }: CreateUserModalProps) =>
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Tipo de Usuário</label>
+            <label className="block text-sm font-medium mb-1 text-gray-700">Tipo de Usuário</label>
             <select
-              className="w-full border rounded px-3 py-2"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               value={tipoUsuario}
               onChange={(e) => setTipoUsuario(e.target.value)}
               required
@@ -114,14 +114,14 @@ export const CreateUserModal = ({ onClose, onSuccess }: CreateUserModalProps) =>
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-100 text-gray-800 px-4 py-2 rounded hover:bg-gray-200"
+              className="bg-gray-100 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-200 transition"
               disabled={loading}
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
               disabled={loading}
             >
               {loading ? "Salvando..." : "Salvar"}
