@@ -84,7 +84,7 @@ export const TurmaList = ({
 
   return (
     <div className="bg-white rounded-xl shadow overflow-hidden">
-      <div className="px-5 py-3 bg-green-50 border-b border-gray-200 font-semibold text-sm text-gray-800">
+      <div className="px-5 py-3 bg-blue-50 border-b border-gray-200 font-semibold text-sm text-gray-800">
         Mostrando página <strong>{page}</strong> de <strong>{totalPages}</strong> - Total: {totalItems} turmas
       </div>
 
@@ -94,11 +94,11 @@ export const TurmaList = ({
           className="flex items-center justify-between px-5 py-4 border-b border-gray-100 hover:bg-gray-50 transition duration-150"
         >
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xl">
+            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xl">
               📚
             </div>
             <div>
-              <p className="text-green-700 font-semibold hover:underline cursor-pointer">
+              <p className="text-blue-700 font-semibold hover:underline cursor-pointer">
                 {turma.nome}
               </p>
               <p className="text-sm text-gray-500">
@@ -121,7 +121,7 @@ export const TurmaList = ({
         >
           &lt;
         </button>
-        <span className="px-3 py-1 bg-green-600 text-white rounded">{page}</span>
+        <span className="px-3 py-1 bg-blue-600 text-white rounded">{page}</span>
         <button
           onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
           disabled={page === totalPages}
