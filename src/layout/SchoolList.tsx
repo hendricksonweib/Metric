@@ -61,18 +61,23 @@ export const SchoolList = () => {
 
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
-      <div className="px-5 py-3 bg-blue-50 border-b font-semibold text-sm text-gray-800">
+      <div className="px-5 py-3 bg-blue-50 border-b border-gray-200 font-semibold text-sm text-gray-800">
         Mostrando página <strong>{page}</strong> de <strong>{totalPages}</strong> - Total: {totalItems} escolas
       </div>
 
       {escolas.map((escola) => (
-        <div key={escola.id} className="flex items-center justify-between px-5 py-4 border-b hover:bg-gray-50 transition">
+        <div
+          key={escola.id}
+          className="flex items-center justify-between px-5 py-4 border-b border-gray-100 hover:bg-gray-50 transition"
+        >
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xl">
               🏫
             </div>
             <div>
-              <p className="text-blue-700 font-semibold hover:underline cursor-pointer">{escola.nome}</p>
+              <p className="text-blue-700 font-semibold hover:underline cursor-pointer">
+                {escola.nome}
+              </p>
               <p className="text-sm text-gray-500">
                 ID: {escola.id} | Região ID: {escola.regiao_id} | Grupo ID: {escola.grupo_id}
               </p>
@@ -85,7 +90,7 @@ export const SchoolList = () => {
         </div>
       ))}
 
-      <div className="flex justify-between items-center px-5 py-3 bg-gray-50 text-sm text-gray-600 border-t">
+      <div className="flex justify-between items-center px-5 py-3 bg-gray-50 text-sm text-gray-600 border-t border-gray-200">
         <button
           onClick={() => setPage((p) => Math.max(p - 1, 1))}
           disabled={page === 1}
