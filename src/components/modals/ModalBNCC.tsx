@@ -1,4 +1,3 @@
-// ModalBNCC.tsx
 import { useEffect, useState } from "react";
 
 interface HabilidadeBNCC {
@@ -12,6 +11,7 @@ interface HabilidadeBNCC {
 interface ModalBNCCProps {
   onClose: () => void;
   onSelect: (habilidades: HabilidadeBNCC[]) => void;
+  componenteCurricularId: number;
 }
 
 const series = [
@@ -21,18 +21,17 @@ const series = [
   "TERCEIRO_AO_QUINTO_ANO", "PRIMEIRO_AO_QUINTO_ANO", "EJA"
 ];
 
-export const ModalBNCC = ({ onClose, onSelect }: ModalBNCCProps) => {
+export const ModalBNCC = ({ onClose, onSelect, componenteCurricularId }: ModalBNCCProps) => {
   const [habilidades, setHabilidades] = useState<HabilidadeBNCC[]>([]);
   const [selecionadas, setSelecionadas] = useState<number[]>([]);
   const [carregando, setCarregando] = useState(true);
   const [serieFiltro, setSerieFiltro] = useState<string>("");
-  const [componenteFiltro, setComponenteFiltro] = useState<string>("");
   const [saebFiltro, setSaebFiltro] = useState<string>("");
 
   useEffect(() => {
     const queryParams = new URLSearchParams();
     if (serieFiltro) queryParams.append("serie", serieFiltro);
-    if (componenteFiltro) queryParams.append("componente_curricular_id", componenteFiltro);
+    if (componenteCurricularId) queryParams.append("componente_curricular_id", componenteCurricularId.toString());
     if (saebFiltro) queryParams.append("saeb", saebFiltro);
 
     fetch(`${import.meta.env.VITE_API_URL}/api/bncc?${queryParams.toString()}`)
@@ -41,7 +40,7 @@ export const ModalBNCC = ({ onClose, onSelect }: ModalBNCCProps) => {
         setHabilidades(data || []);
         setCarregando(false);
       });
-  }, [serieFiltro, componenteFiltro, saebFiltro]);
+  }, [serieFiltro, saebFiltro, componenteCurricularId]);
 
   const toggleHabilidade = (id: number) => {
     setSelecionadas(prev =>
@@ -60,15 +59,7 @@ export const ModalBNCC = ({ onClose, onSelect }: ModalBNCCProps) => {
       <div className="bg-white w-full max-w-3xl p-6 rounded-xl shadow-lg">
         <h2 className="text-lg font-semibold mb-4">Selecionar Habilidades BNCC</h2>
 
-        <div className="grid grid-cols-3 gap-4 mb-4">
-          <input
-            type="number"
-            placeholder="ID Componente Curricular"
-            value={componenteFiltro}
-            onChange={(e) => setComponenteFiltro(e.target.value)}
-            className="border px-2 py-1 rounded"
-          />
-
+        <div className="grid grid-cols-2 gap-4 mb-4">
           <select
             value={serieFiltro}
             onChange={(e) => setSerieFiltro(e.target.value)}
@@ -86,8 +77,8 @@ export const ModalBNCC = ({ onClose, onSelect }: ModalBNCCProps) => {
             className="border px-2 py-1 rounded"
           >
             <option value="">Todos</option>
-            <option value="true">Somente SAEB</option>
-            <option value="false">Somente não-SAEB</option>
+            <option value="true">SAEB</option>
+            <option value="false">BNCC</option>
           </select>
         </div>
 

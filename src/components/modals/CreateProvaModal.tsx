@@ -1,6 +1,5 @@
-// CreateProvaModal.tsx
 import { useEffect, useState } from "react";
-import { ModalBNCC } from "../modals/ModalBNCC"; 
+import { ModalBNCC } from "./ModalBNCC"; 
 
 interface ProvaModalProps {
   provaId: number | null;
@@ -180,8 +179,8 @@ export const CreateProvaModal = ({ provaId, onClose, onSuccess }: ProvaModalProp
               <div>
                 <label className="text-sm font-medium block mb-1">Habilidades BNCC/SAEB</label>
                 <button
-                  className="w-full px-4 py-2 rounded bg-gray-100 border hover:bg-gray-200 text-sm text-gray-700"
                   onClick={() => setModalBNCCIndex(index)}
+                  className="w-full px-4 py-2 rounded bg-gray-100 border hover:bg-gray-200 text-sm text-gray-700"
                 >
                   + Selecionar habilidades BNCC/SAEB
                 </button>
@@ -209,19 +208,19 @@ export const CreateProvaModal = ({ provaId, onClose, onSuccess }: ProvaModalProp
           <button onClick={onClose} className="px-4 py-2 rounded-md text-gray-600 hover:bg-gray-100 transition">Cancelar</button>
           <button onClick={handleSubmit} className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition">{provaId ? "Salvar" : "Salvar Questões"}</button>
         </div>
-
-        {/* Modal BNCC */}
-        {modalBNCCIndex !== null && (
-          <ModalBNCC
-            onClose={() => setModalBNCCIndex(null)}
-            onSelect={(habilidadesSelecionadas) => {
-              const copy = [...questoes];
-              copy[modalBNCCIndex].codigos_bncc = habilidadesSelecionadas.map(h => h.id);
-              setQuestoes(copy);
-            }}
-          />
-        )}
       </div>
+
+      {modalBNCCIndex !== null && (
+        <ModalBNCC
+          onClose={() => setModalBNCCIndex(null)}
+          onSelect={(habilidadesSelecionadas) => {
+            const copy = [...questoes];
+            copy[modalBNCCIndex].codigos_bncc = habilidadesSelecionadas.map(h => h.id);
+            setQuestoes(copy);
+          }}
+          componenteCurricularId={questoes[modalBNCCIndex].componente_curricular_id}
+        />
+      )}
     </div>
   );
 };
