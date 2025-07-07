@@ -66,14 +66,14 @@ export const AlunoFilter = ({ onFilter }: AlunoFilterProps) => {
           <input
             type="text"
             placeholder="Digite o nome do aluno..."
-            className="w-full pl-10 pr-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
           />
         </div>
 
         <select
-          className="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={escolaId}
           onChange={(e) => setEscolaId(e.target.value === "" ? "" : parseInt(e.target.value))}
         >
@@ -86,7 +86,7 @@ export const AlunoFilter = ({ onFilter }: AlunoFilterProps) => {
         </select>
 
         <select
-          className="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={turmaId}
           onChange={(e) => setTurmaId(e.target.value === "" ? "" : parseInt(e.target.value))}
         >
