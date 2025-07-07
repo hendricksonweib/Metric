@@ -1,3 +1,4 @@
+// ModalBNCC.tsx
 import { useEffect, useState } from "react";
 
 interface HabilidadeBNCC {
@@ -13,19 +14,34 @@ interface ModalBNCCProps {
   onSelect: (habilidades: HabilidadeBNCC[]) => void;
 }
 
+const series = [
+  "PRIMEIRO_ANO", "SEGUNDO_ANO", "TERCEIRO_ANO", "QUARTO_ANO", "QUINTO_ANO",
+  "SEXTO_ANO", "SETIMO_ANO", "OITAVO_ANO", "NONO_ANO", "PRIMEIRA_SERIE",
+  "SEGUNDA_SERIE", "TERCEIRA_SERIE", "PRIMEIRO_E_SEGUNDO_ANOS",
+  "TERCEIRO_AO_QUINTO_ANO", "PRIMEIRO_AO_QUINTO_ANO", "EJA"
+];
+
 export const ModalBNCC = ({ onClose, onSelect }: ModalBNCCProps) => {
   const [habilidades, setHabilidades] = useState<HabilidadeBNCC[]>([]);
   const [selecionadas, setSelecionadas] = useState<number[]>([]);
   const [carregando, setCarregando] = useState(true);
+  const [serieFiltro, setSerieFiltro] = useState<string>("");
+  const [componenteFiltro, setComponenteFiltro] = useState<string>("");
+  const [saebFiltro, setSaebFiltro] = useState<string>("");
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/bncc`)
+    const queryParams = new URLSearchParams();
+    if (serieFiltro) queryParams.append("serie", serieFiltro);
+    if (componenteFiltro) queryParams.append("componente_curricular_id", componenteFiltro);
+    if (saebFiltro) queryParams.append("saeb", saebFiltro);
+
+    fetch(`${import.meta.env.VITE_API_URL}/api/bncc?${queryParams.toString()}`)
       .then(res => res.json())
       .then(data => {
         setHabilidades(data || []);
         setCarregando(false);
       });
-  }, []);
+  }, [serieFiltro, componenteFiltro, saebFiltro]);
 
   const toggleHabilidade = (id: number) => {
     setSelecionadas(prev =>
@@ -43,6 +59,37 @@ export const ModalBNCC = ({ onClose, onSelect }: ModalBNCCProps) => {
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center z-50">
       <div className="bg-white w-full max-w-3xl p-6 rounded-xl shadow-lg">
         <h2 className="text-lg font-semibold mb-4">Selecionar Habilidades BNCC</h2>
+
+        <div className="grid grid-cols-3 gap-4 mb-4">
+          <input
+            type="number"
+            placeholder="ID Componente Curricular"
+            value={componenteFiltro}
+            onChange={(e) => setComponenteFiltro(e.target.value)}
+            className="border px-2 py-1 rounded"
+          />
+
+          <select
+            value={serieFiltro}
+            onChange={(e) => setSerieFiltro(e.target.value)}
+            className="border px-2 py-1 rounded"
+          >
+            <option value="">Todas as Séries</option>
+            {series.map(s => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+
+          <select
+            value={saebFiltro}
+            onChange={(e) => setSaebFiltro(e.target.value)}
+            className="border px-2 py-1 rounded"
+          >
+            <option value="">Todos</option>
+            <option value="true">Somente SAEB</option>
+            <option value="false">Somente não-SAEB</option>
+          </select>
+        </div>
 
         {carregando ? (
           <p className="text-center text-gray-500">Carregando habilidades...</p>
