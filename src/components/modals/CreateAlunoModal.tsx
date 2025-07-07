@@ -62,6 +62,14 @@ export const CreateAlunoModal = ({ alunoId, onClose, onSuccess }: CreateAlunoMod
         setNome(data.nome || "");
         setEscolaId(data.escola_id || "");
         setTurmaId(data.turma_id || "");
+
+        // Força atualização das turmas após obter a escola
+        if (data.escola_id) {
+          const turmasRes = await fetch(`${import.meta.env.VITE_API_URL}/api/turmas?escola_id=${data.escola_id}`);
+          const turmasData = await turmasRes.json();
+          const lista = Array.isArray(turmasData) ? turmasData : turmasData.data;
+          setTurmas(Array.isArray(lista) ? lista : []);
+        }
       };
       fetchAluno();
     }
@@ -101,8 +109,8 @@ export const CreateAlunoModal = ({ alunoId, onClose, onSuccess }: CreateAlunoMod
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-      <div className="bg-white w-full max-w-md p-6 rounded-xl shadow-lg animate-fadeIn">
+   <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center z-50">
+      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl w-full max-w-md p-6">
         <h2 className="text-lg font-bold text-gray-800 mb-6">
           {alunoId ? "Editar Aluno" : "Adicionar Novo Aluno"}
         </h2>
