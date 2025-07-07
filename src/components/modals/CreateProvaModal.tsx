@@ -196,7 +196,6 @@ export const CreateProvaModal = ({ provaId, onClose, onSuccess }: ProvaModalProp
             </div>
           ))}
         </div>
-
         <div className="flex justify-end mt-6 gap-2">
           <button onClick={onClose} className="px-4 py-2 rounded-md text-gray-600 hover:bg-gray-100 transition">Cancelar</button>
           <button onClick={handleSubmit} className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition">{provaId ? "Salvar" : "Salvar Questões"}</button>
