@@ -18,7 +18,6 @@ export default function TurmasPage() {
   const [escolaId, setEscolaId] = useState<number | null>(null);
   const [escolas, setEscolas] = useState<Escola[]>([]);
 
-  // Busca escolas para o select
   useEffect(() => {
     const fetchEscolas = async () => {
       try {
@@ -64,7 +63,6 @@ export default function TurmasPage() {
           }}
         />
 
-        {/* 🔵 Filtro com estilo azul unificado */}
         <div className="bg-white rounded-xl shadow-md p-6 mb-6">
           <h2 className="text-base font-semibold text-gray-700 mb-4">Buscar Turmas</h2>
           <div className="flex flex-wrap gap-4 items-end">
