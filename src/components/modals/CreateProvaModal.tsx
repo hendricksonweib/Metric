@@ -18,7 +18,7 @@ interface Questao {
   alternativas: { texto: string; correta: boolean }[];
 }
 
-const niveis = ["FUNDAMENTAL_I", "FUNDAMENTAL_II", "MEDIO"];
+const niveis = ["ANOS_INICIAIS", "ANOS_FINAIS", "ENSINO_MEDIO"];
 const series = [
   "PRIMEIRO_ANO", "SEGUNDO_ANO", "TERCEIRO_ANO", "QUARTO_ANO", "QUINTO_ANO",
   "SEXTO_ANO", "SETIMO_ANO", "OITAVO_ANO", "NONO_ANO", "PRIMEIRA_SERIE",
@@ -30,16 +30,15 @@ const dificuldades = ["FACIL", "MEDIA", "DIFICIL"];
 export const CreateProvaModal = ({ provaId, onClose, onSuccess }: ProvaModalProps) => {
   const [titulo, setTitulo] = useState("");
   const [descricao, setDescricao] = useState("");
-  const [nivelEnsino, setNivelEnsino] = useState("FUNDAMENTAL_I");
+  const [nivelEnsino, setNivelEnsino] = useState("ANOS_INICIAIS");
   const [questoes, setQuestoes] = useState<Questao[]>([]);
-  const [etapa, setEtapa] = useState(1);
 
   const handleAddQuestao = () => {
     setQuestoes([...questoes, {
       enunciado: "",
       imagem_url: "",
       nivel_ensino: nivelEnsino,
-      dificuldade: "MEDIA",
+      dificuldade: "FACIL",
       serie: "PRIMEIRO_ANO",
       pontos: 1,
       componente_curricular_id: 0,
@@ -48,8 +47,8 @@ export const CreateProvaModal = ({ provaId, onClose, onSuccess }: ProvaModalProp
         { texto: "", correta: true },
         { texto: "", correta: false },
         { texto: "", correta: false },
-        { texto: "", correta: false }
-      ]
+        { texto: "", correta: false },
+      ],
     }]);
   };
 
@@ -79,61 +78,94 @@ export const CreateProvaModal = ({ provaId, onClose, onSuccess }: ProvaModalProp
 
   return (
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center z-50 overflow-y-auto">
-      <div className="bg-white w-full max-w-3xl p-6 rounded-xl shadow-lg overflow-y-auto max-h-[90vh]">
-        <h2 className="text-xl font-semibold mb-4">
-          {provaId ? "Editar Prova" : etapa === 1 ? "Criar Nova Prova - Etapa 1" : "Etapa 2 - Questões"}
-        </h2>
+      <div className="bg-white w-full max-w-4xl p-6 rounded-xl shadow-lg overflow-y-auto max-h-[90vh]">
+        <h2 className="text-xl font-semibold mb-4">{provaId ? "Editar Prova" : "Criar Nova Prova - Etapa 1"}</h2>
 
-        {etapa === 1 && (
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm font-medium">Nome da Prova</label>
-              <input value={titulo} onChange={e => setTitulo(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div>
-            <div>
-              <label className="text-sm font-medium">Descrição (opcional)</label>
-              <textarea value={descricao} onChange={e => setDescricao(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div>
-            <div>
-              <label className="text-sm font-medium">Nível de Ensino</label>
-              <select value={nivelEnsino} onChange={e => setNivelEnsino(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                {niveis.map(n => <option key={n} value={n}>{n.replace("_", " ")}</option>)}
-              </select>
-            </div>
-          </div>
-        )}
-
-        {etapa === 2 && (
+        <div className="space-y-4">
           <div>
-            <div className="flex justify-between items-center mt-6">
-              <h3 className="text-lg font-semibold">Questões</h3>
-              <button onClick={handleAddQuestao} className="px-3 py-1 rounded-md bg-blue-600 text-white hover:bg-blue-700 text-sm">+ Adicionar Questão</button>
-            </div>
-            {questoes.map((q, index) => (
-              <div key={index} className="border rounded-lg p-4 space-y-2 mt-3">
-                <p className="font-medium">Questão {index + 1}</p>
-                <textarea
-                  placeholder="Enunciado"
-                  value={q.enunciado}
-                  onChange={(e) => {
-                    const copy = [...questoes];
-                    copy[index].enunciado = e.target.value;
-                    setQuestoes(copy);
-                  }}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            ))}
+            <label className="text-sm font-medium">Nome da Prova</label>
+            <input value={titulo} onChange={e => setTitulo(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
-        )}
+          <div>
+            <label className="text-sm font-medium">Descrição (opcional)</label>
+            <textarea value={descricao} onChange={e => setDescricao(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div>
+            <label className="text-sm font-medium">Nível de Ensino</label>
+            <select value={nivelEnsino} onChange={e => setNivelEnsino(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+              {niveis.map(n => <option key={n} value={n}>{n.replace("_", " ")}</option>)}
+            </select>
+          </div>
 
-        <div className="flex justify-between mt-6 gap-2">
+          <div className="flex justify-between items-center mt-6">
+            <h3 className="text-lg font-semibold">Etapa 2 - Questões</h3>
+            <button onClick={handleAddQuestao} className="px-3 py-1 rounded-md bg-blue-600 text-white hover:bg-blue-700 text-sm">+ Adicionar Questão</button>
+          </div>
+
+          {questoes.map((q, index) => (
+            <div key={index} className="border rounded-lg p-4 space-y-3 mt-3">
+              <p className="font-medium">Adicionar Questão - {index + 1}</p>
+              <textarea placeholder="Enunciado" value={q.enunciado} onChange={(e) => {
+                const copy = [...questoes];
+                copy[index].enunciado = e.target.value;
+                setQuestoes(copy);
+              }} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+
+              <div className="grid grid-cols-2 gap-4">
+                <select value={q.nivel_ensino} onChange={(e) => {
+                  const copy = [...questoes];
+                  copy[index].nivel_ensino = e.target.value;
+                  setQuestoes(copy);
+                }} className="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                  <option>Selecione o nível</option>
+                  {niveis.map(n => <option key={n} value={n}>{n}</option>)}
+                </select>
+
+                <select value={q.serie} onChange={(e) => {
+                  const copy = [...questoes];
+                  copy[index].serie = e.target.value;
+                  setQuestoes(copy);
+                }} className="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                  <option>Selecione a série</option>
+                  {series.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+
+                <select value={q.dificuldade} onChange={(e) => {
+                  const copy = [...questoes];
+                  copy[index].dificuldade = e.target.value;
+                  setQuestoes(copy);
+                }} className="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                  {dificuldades.map(d => <option key={d} value={d}>{d}</option>)}
+                </select>
+
+                <input type="number" placeholder="ID componente curricular" value={q.componente_curricular_id} onChange={(e) => {
+                  const copy = [...questoes];
+                  copy[index].componente_curricular_id = Number(e.target.value);
+                  setQuestoes(copy);
+                }} className="w-full px-4 py-2 border border-gray-300 rounded-lg" />
+              </div>
+
+              {q.alternativas.map((alt, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <input type="radio" checked={alt.correta} onChange={() => {
+                    const copy = [...questoes];
+                    copy[index].alternativas = copy[index].alternativas.map((a, j) => ({ ...a, correta: j === i }));
+                    setQuestoes(copy);
+                  }} />
+                  <input type="text" value={alt.texto} onChange={(e) => {
+                    const copy = [...questoes];
+                    copy[index].alternativas[i].texto = e.target.value;
+                    setQuestoes(copy);
+                  }} placeholder={`Alternativa ${String.fromCharCode(65 + i)}`} className="w-full px-4 py-2 border border-gray-300 rounded-lg" />
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+
+        <div className="flex justify-end mt-6 gap-2">
           <button onClick={onClose} className="px-4 py-2 rounded-md text-gray-600 hover:bg-gray-100 transition">Cancelar</button>
-          {etapa === 1 ? (
-            <button onClick={() => setEtapa(2)} className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition">Continuar para Questões</button>
-          ) : (
-            <button onClick={handleSubmit} className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition">Salvar Prova</button>
-          )}
+          <button onClick={handleSubmit} className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition">{provaId ? "Salvar" : "Salvar Questões"}</button>
         </div>
       </div>
     </div>
