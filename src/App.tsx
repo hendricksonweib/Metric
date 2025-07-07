@@ -2,9 +2,10 @@ import { Routes, Route } from "react-router-dom";
 import { LoginPage } from "./pages/Login";
 import { DashboardPage } from "./pages/DashboardPage";
 import EscolasPage from "./pages/EscolasPage";
-import AlunosPage from "./pages/AlunosPage";
-import { UsuariosPage } from "./pages/UsuariosPage";
 import TurmasPage from "./pages/TurmasPage";
+import AlunosPage from "./pages/AlunosPage";
+import ProvasPage from "./pages/ProvasPage";
+import { UsuariosPage } from "./pages/UsuariosPage";
 function App() {
   return (
     <Routes>
@@ -13,6 +14,7 @@ function App() {
       <Route path="/escolas" element={<EscolasPage />} />
       <Route path="/turmas" element={<TurmasPage />} />
       <Route path="/alunos" element={<AlunosPage />} />
+      <Route path="/provas" element={<ProvasPage />} />
       <Route path="/usuarios" element={<UsuariosPage />} />
     </Routes>
   );
