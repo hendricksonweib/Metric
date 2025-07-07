@@ -14,21 +14,22 @@ interface ProvaListProps {
   reload?: boolean;
   onReloadDone?: () => void;
   onEdit?: (id: number) => void;
-  searchTitulo: string;
+  searchTitulo?: string; // Torna opcional
 }
 
 export const ProvaList = ({
   reload,
   onReloadDone,
   onEdit,
-  searchTitulo,
+  searchTitulo = "", // Valor padrão
 }: ProvaListProps) => {
   const [provas, setProvas] = useState<Prova[]>([]);
 
   const fetchProvas = async () => {
     try {
       const queryParams = new URLSearchParams();
-      if (searchTitulo.trim()) queryParams.append("titulo", searchTitulo);
+      if ((searchTitulo ?? "").trim())
+        queryParams.append("titulo", (searchTitulo ?? "").trim());
 
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/api/provas?${queryParams.toString()}`
@@ -90,7 +91,8 @@ export const ProvaList = ({
                 {prova.nome}
               </p>
               <p className="text-sm text-gray-500">
-                ID: {prova.id} | Criada em: {new Date(prova.createdAt).toLocaleDateString()}<br />
+                ID: {prova.id} | Criada em:{" "}
+                {new Date(prova.createdAt).toLocaleDateString()} <br />
                 Questões: {prova._count.questoes}
               </p>
             </div>
@@ -103,7 +105,9 @@ export const ProvaList = ({
       ))}
 
       {provas.length === 0 && (
-        <div className="px-5 py-4 text-sm text-gray-500 text-center">Nenhuma prova encontrada.</div>
+        <div className="px-5 py-4 text-sm text-gray-500 text-center">
+          Nenhuma prova encontrada.
+        </div>
       )}
     </div>
   );
