@@ -18,6 +18,11 @@ interface Questao {
   alternativas: { texto: string; correta: boolean }[];
 }
 
+interface ComponenteCurricular {
+  id: number;
+  nome: string;
+}
+
 const niveis = ["ANOS_INICIAIS", "ANOS_FINAIS", "ENSINO_MEDIO"];
 const series = [
   "PRIMEIRO_ANO", "SEGUNDO_ANO", "TERCEIRO_ANO", "QUARTO_ANO", "QUINTO_ANO",
@@ -32,6 +37,14 @@ export const CreateProvaModal = ({ provaId, onClose, onSuccess }: ProvaModalProp
   const [descricao, setDescricao] = useState("");
   const [nivelEnsino, setNivelEnsino] = useState("ANOS_INICIAIS");
   const [questoes, setQuestoes] = useState<Questao[]>([]);
+  const [componentes, setComponentes] = useState<ComponenteCurricular[]>([]);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/componentes-curriculares`)
+      .then(res => res.json())
+      .then(data => setComponentes(data || []))
+      .catch(() => setComponentes([]));
+  }, []);
 
   const handleAddQuestao = () => {
     setQuestoes([...questoes, {
@@ -150,11 +163,14 @@ export const CreateProvaModal = ({ provaId, onClose, onSuccess }: ProvaModalProp
 
                 <div>
                   <label className="text-sm font-medium">Componente curricular</label>
-                  <input type="number" placeholder="ID componente curricular" value={q.componente_curricular_id} onChange={(e) => {
+                  <select value={q.componente_curricular_id} onChange={(e) => {
                     const copy = [...questoes];
                     copy[index].componente_curricular_id = Number(e.target.value);
                     setQuestoes(copy);
-                  }} className="w-full px-4 py-2 border border-gray-300 rounded-lg" />
+                  }} className="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    <option value="">Selecione</option>
+                    {componentes.map(c => <option key={c.id} value={c.id}>{c.nome}</option>)}
+                  </select>
                 </div>
               </div>
 
