@@ -174,6 +174,11 @@ export const CreateProvaModal = ({ provaId, onClose, onSuccess }: ProvaModalProp
                 </div>
               </div>
 
+              <div>
+                <label className="text-sm font-medium block mb-1">Habilidades BNCC</label>
+                <button className="w-full px-4 py-2 rounded bg-gray-100 border hover:bg-gray-200 text-sm text-gray-700">+ Selecionar habilidades BNCC</button>
+              </div>
+
               {q.alternativas.map((alt, i) => (
                 <div key={i} className="flex items-center gap-2">
                   <input type="radio" checked={alt.correta} onChange={() => {
