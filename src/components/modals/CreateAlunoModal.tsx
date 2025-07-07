@@ -26,7 +26,7 @@ export const CreateAlunoModal = ({ alunoId, onClose, onSuccess }: CreateAlunoMod
 
   useEffect(() => {
     const fetchEscolas = async () => {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/escolas`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/escolas?limit=200`);
       const data = await res.json();
       const lista = Array.isArray(data) ? data : data.data;
       setEscolas(Array.isArray(lista) ? lista : []);
@@ -69,7 +69,7 @@ export const CreateAlunoModal = ({ alunoId, onClose, onSuccess }: CreateAlunoMod
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/alunos${alunoId ? `/${alunoId}` : ""}`,
+        `${import.meta.env.VITE_API_URL}/api/alunos?limit=200${alunoId ? `/${alunoId}` : ""}`,
         {
           method: alunoId ? "PUT" : "POST",
           headers: { "Content-Type": "application/json" },
@@ -88,8 +88,8 @@ export const CreateAlunoModal = ({ alunoId, onClose, onSuccess }: CreateAlunoMod
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-      <div className="bg-white w-full max-w-md p-6 rounded-xl shadow-lg animate-fadeIn">
+  <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center z-50">
+      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl w-full max-w-md p-6">
         <h2 className="text-lg font-bold text-gray-800 mb-6">
           {alunoId ? "Editar Aluno" : "Adicionar Novo Aluno"}
         </h2>
@@ -101,7 +101,7 @@ export const CreateAlunoModal = ({ alunoId, onClose, onSuccess }: CreateAlunoMod
               type="text"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -110,7 +110,7 @@ export const CreateAlunoModal = ({ alunoId, onClose, onSuccess }: CreateAlunoMod
             <select
               value={escolaId}
               onChange={(e) => setEscolaId(e.target.value === "" ? "" : parseInt(e.target.value))}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Selecione uma escola</option>
               {escolas.map((escola) => (
@@ -126,7 +126,7 @@ export const CreateAlunoModal = ({ alunoId, onClose, onSuccess }: CreateAlunoMod
             <select
               value={turmaId}
               onChange={(e) => setTurmaId(e.target.value === "" ? "" : parseInt(e.target.value))}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Selecione uma turma</option>
               {turmas.map((turma) => (
