@@ -112,37 +112,50 @@ export const CreateProvaModal = ({ provaId, onClose, onSuccess }: ProvaModalProp
               }} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
 
               <div className="grid grid-cols-2 gap-4">
-                <select value={q.nivel_ensino} onChange={(e) => {
-                  const copy = [...questoes];
-                  copy[index].nivel_ensino = e.target.value;
-                  setQuestoes(copy);
-                }} className="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                  <option>Selecione o nível</option>
-                  {niveis.map(n => <option key={n} value={n}>{n}</option>)}
-                </select>
+                <div>
+                  <label className="text-sm font-medium">Nível de ensino</label>
+                  <select value={q.nivel_ensino} onChange={(e) => {
+                    const copy = [...questoes];
+                    copy[index].nivel_ensino = e.target.value;
+                    setQuestoes(copy);
+                  }} className="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    <option>Selecione</option>
+                    {niveis.map(n => <option key={n} value={n}>{n}</option>)}
+                  </select>
+                </div>
 
-                <select value={q.serie} onChange={(e) => {
-                  const copy = [...questoes];
-                  copy[index].serie = e.target.value;
-                  setQuestoes(copy);
-                }} className="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                  <option>Selecione a série</option>
-                  {series.map(s => <option key={s} value={s}>{s}</option>)}
-                </select>
+                <div>
+                  <label className="text-sm font-medium">Série</label>
+                  <select value={q.serie} onChange={(e) => {
+                    const copy = [...questoes];
+                    copy[index].serie = e.target.value;
+                    setQuestoes(copy);
+                  }} className="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    <option>Selecione</option>
+                    {series.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
+                </div>
 
-                <select value={q.dificuldade} onChange={(e) => {
-                  const copy = [...questoes];
-                  copy[index].dificuldade = e.target.value;
-                  setQuestoes(copy);
-                }} className="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                  {dificuldades.map(d => <option key={d} value={d}>{d}</option>)}
-                </select>
+                <div>
+                  <label className="text-sm font-medium">Dificuldade</label>
+                  <select value={q.dificuldade} onChange={(e) => {
+                    const copy = [...questoes];
+                    copy[index].dificuldade = e.target.value;
+                    setQuestoes(copy);
+                  }} className="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    <option>Selecione</option>
+                    {dificuldades.map(d => <option key={d} value={d}>{d}</option>)}
+                  </select>
+                </div>
 
-                <input type="number" placeholder="ID componente curricular" value={q.componente_curricular_id} onChange={(e) => {
-                  const copy = [...questoes];
-                  copy[index].componente_curricular_id = Number(e.target.value);
-                  setQuestoes(copy);
-                }} className="w-full px-4 py-2 border border-gray-300 rounded-lg" />
+                <div>
+                  <label className="text-sm font-medium">Componente curricular</label>
+                  <input type="number" placeholder="ID componente curricular" value={q.componente_curricular_id} onChange={(e) => {
+                    const copy = [...questoes];
+                    copy[index].componente_curricular_id = Number(e.target.value);
+                    setQuestoes(copy);
+                  }} className="w-full px-4 py-2 border border-gray-300 rounded-lg" />
+                </div>
               </div>
 
               {q.alternativas.map((alt, i) => (
