@@ -6,6 +6,7 @@ import TurmasPage from "./pages/TurmasPage";
 import AlunosPage from "./pages/AlunosPage";
 import ProvasPage from "./pages/ProvasPage";
 import { UsuariosPage } from "./pages/UsuariosPage";
+import GabaritoPage from "./pages/GabaritoPage";
 function App() {
   return (
     <Routes>
@@ -16,6 +17,7 @@ function App() {
       <Route path="/alunos" element={<AlunosPage />} />
       <Route path="/provas" element={<ProvasPage />} />
       <Route path="/usuarios" element={<UsuariosPage />} />
+      <Route path="/gabaritos" element={<GabaritoPage />} />
     </Routes>
   );
 }
