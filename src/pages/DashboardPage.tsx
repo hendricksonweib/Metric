@@ -7,6 +7,7 @@ import { GraficoDesempenhoAvaliacoes } from "../components/GraficoDesempenhoAval
 import { GraficoComponentesCurriculares } from "../components/GraficoComponentesCurriculares";
 import { GraficoRankingRegioes } from "../components/GraficoRankingRegioes";
 import { TabelaHabilidadesBNCC } from "../components/TabelaHabilidadesBNCC";
+import { RankingAlunos } from "../components/RankingAlunos";
 
 export const DashboardPage = () => {
   const handleExport = async () => {
@@ -67,6 +68,7 @@ export const DashboardPage = () => {
         <div className="mt-8">
           <TabelaHabilidadesBNCC />
           </div>
+          <RankingAlunos/>
       </div>
     </>
   );
