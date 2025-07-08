@@ -4,6 +4,7 @@ import { PageHeader } from "../ui/PageHeader";
 import { ProvaList } from "../layout/ProvaList";
 import { CreateProvaModal } from "../components/modals/CreateProvaModal";
 
+
 export default function ProvasPage() {
   const [showModal, setShowModal] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
