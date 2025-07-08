@@ -2,6 +2,7 @@ import { Header } from "../components/Header";
 import { PageHeader } from "../ui/PageHeader";
 import { FiltroAvaliacoes } from "../components/FiltroAvaliacoes";
 import { DashboardResumo } from "../components/DashboardResumo";
+import { TabelaDesempenhoEscolas } from "../components/TabelaDesempenhoEscolas";
 export const DashboardPage = () => {
   const handleExport = async () => {
     try {
@@ -10,7 +11,7 @@ export const DashboardPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({}), // Altere aqui se a API exigir algum conteúdo
+        body: JSON.stringify({}), 
       });
 
       if (!response.ok) {
@@ -49,6 +50,7 @@ export const DashboardPage = () => {
           onActionClick={handleExport}
         />
         <DashboardResumo />
+        <TabelaDesempenhoEscolas />
       </div>
     </>
   );
