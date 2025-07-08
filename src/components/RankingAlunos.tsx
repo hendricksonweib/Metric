@@ -33,7 +33,7 @@ export const RankingAlunos = () => {
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/dashboard/student-ranking?page=${page}&limit=20`)
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((json: ApiResponse) => {
         setAlunos(json.data);
         setTotalPages(json.totalPages);
@@ -50,7 +50,7 @@ export const RankingAlunos = () => {
       <button
         key={p}
         onClick={() => setPage(p)}
-        className={`w-8 h-8 text-sm rounded border ${
+        className={`w-8 h-8 rounded-md text-sm border transition ${
           page === p
             ? "bg-blue-600 text-white"
             : "bg-white text-gray-700 hover:bg-gray-100"
@@ -60,13 +60,12 @@ export const RankingAlunos = () => {
       </button>
     );
 
-    // Always show first and last
     if (page > 1) {
       buttons.push(
         <button
           key="prev"
           onClick={() => setPage(page - 1)}
-          className="px-2 h-8 rounded border hover:bg-gray-100 text-gray-700"
+          className="px-2 h-8 rounded-md border text-gray-600 hover:bg-gray-100"
         >
           {"<"}
         </button>
@@ -75,7 +74,7 @@ export const RankingAlunos = () => {
 
     if (page > delta + 2) {
       buttons.push(createPageButton(1));
-      buttons.push(<span key="start-ellipsis" className="px-2">...</span>);
+      buttons.push(<span key="start-ellipsis" className="px-2 text-gray-400">...</span>);
     }
 
     for (let i = Math.max(1, page - delta); i <= Math.min(totalPages, page + delta); i++) {
@@ -83,7 +82,7 @@ export const RankingAlunos = () => {
     }
 
     if (page < totalPages - delta - 1) {
-      buttons.push(<span key="end-ellipsis" className="px-2">...</span>);
+      buttons.push(<span key="end-ellipsis" className="px-2 text-gray-400">...</span>);
       buttons.push(createPageButton(totalPages));
     }
 
@@ -92,7 +91,7 @@ export const RankingAlunos = () => {
         <button
           key="next"
           onClick={() => setPage(page + 1)}
-          className="px-2 h-8 rounded border hover:bg-gray-100 text-gray-700"
+          className="px-2 h-8 rounded-md border text-gray-600 hover:bg-gray-100"
         >
           {">"}
         </button>
@@ -103,40 +102,44 @@ export const RankingAlunos = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded-xl shadow-sm">
-      <h2 className="text-xl font-semibold mb-4 text-gray-800">Ranking de Alunos</h2>
+    <div className="p-6 bg-white rounded-2xl shadow-md">
+      <h2 className="text-xl font-semibold mb-5 text-gray-800">🏅 Ranking de Alunos</h2>
 
       <div className="overflow-x-auto rounded-lg border border-gray-200">
         <table className="w-full text-sm text-left text-gray-700">
-          <thead className="bg-gray-100 text-gray-600 text-xs uppercase">
+          <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
             <tr>
               <th className="px-4 py-3">Posição</th>
               <th className="px-4 py-3">Aluno</th>
               <th className="px-4 py-3">Escola</th>
               <th className="px-4 py-3">Turma</th>
               <th className="px-4 py-3">Desempenho</th>
-              <th className="px-4 py-3">Notas (Maior / Menor)</th>
+              <th className="px-4 py-3">Notas</th>
             </tr>
           </thead>
           <tbody>
             {alunos.map((aluno, index) => {
               const posicao = (page - 1) * 20 + index + 1;
-              let bg = "";
-
-              if (posicao === 1) bg = "bg-yellow-100";
-              else if (posicao === 2 || posicao === 3) bg = "bg-yellow-50";
+              const bg =
+                posicao === 1
+                  ? "bg-yellow-100"
+                  : posicao <= 3
+                  ? "bg-yellow-50"
+                  : "hover:bg-gray-50";
 
               return (
-                <tr key={aluno.aluno_id} className={`${bg} border-b`}>
-                  <td className="px-4 py-3 font-semibold">{posicao}º</td>
+                <tr key={aluno.aluno_id} className={`${bg} border-b transition`}>
+                  <td className="px-4 py-3 font-medium text-gray-800">{posicao}º</td>
                   <td className="px-4 py-3">{aluno.aluno_nome}</td>
                   <td className="px-4 py-3">{aluno.escola_nome}</td>
                   <td className="px-4 py-3">{aluno.turma_nome}</td>
-                  <td className="px-4 py-3 text-green-600 font-semibold">
-                    {parseFloat(aluno.media_geral.toString()).toFixed(0)}%
-                    <span className="text-gray-400 text-xs"> ({aluno.total_desempenhos} avaliações)</span>
+                  <td className="px-4 py-3 text-blue-700 font-semibold">
+                    {parseFloat(aluno.media_geral.toString()).toFixed(1)}%
+                    <span className="text-gray-400 text-xs ml-1">
+                      ({aluno.total_desempenhos} avaliações)
+                    </span>
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 text-gray-600">
                     {aluno.maior_nota} / {aluno.menor_nota}
                   </td>
                 </tr>
@@ -150,9 +153,7 @@ export const RankingAlunos = () => {
         <p className="text-sm text-gray-500">
           Mostrando {(page - 1) * 20 + 1} a {Math.min(page * 20, total)} de {total} alunos
         </p>
-        <div className="flex gap-1 items-center">
-          {renderPagination()}
-        </div>
+        <div className="flex gap-1 items-center">{renderPagination()}</div>
       </div>
     </div>
   );

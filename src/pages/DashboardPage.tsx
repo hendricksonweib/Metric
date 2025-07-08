@@ -67,8 +67,10 @@ export const DashboardPage = () => {
         </div>
         <div className="mt-8">
           <TabelaHabilidadesBNCC />
-          </div>
-          <RankingAlunos/>
+        </div>
+        <div className="mt-8">
+          <RankingAlunos />
+        </div>
       </div>
     </>
   );
