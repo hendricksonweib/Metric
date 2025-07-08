@@ -14,14 +14,14 @@ interface ProvaListProps {
   reload?: boolean;
   onReloadDone?: () => void;
   onEdit?: (id: number) => void;
-  searchTitulo?: string; // Torna opcional
+  searchTitulo?: string;
 }
 
 export const ProvaList = ({
   reload,
   onReloadDone,
   onEdit,
-  searchTitulo = "", // Valor padrão
+  searchTitulo = "",
 }: ProvaListProps) => {
   const [provas, setProvas] = useState<Prova[]>([]);
 
@@ -58,16 +58,30 @@ export const ProvaList = ({
   }, [reload]);
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm("Deseja excluir esta prova?")) return;
+    if (!window.confirm("Deseja realmente excluir esta prova?")) return;
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/provas/${id}`, {
-        method: "DELETE",
-      });
-      if (!res.ok) throw new Error("Erro ao excluir");
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/provas/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!res.ok) {
+        const erro = await res.text();
+        console.error("Erro ao excluir:", erro);
+        alert(
+          "Erro ao excluir prova. Verifique se ela possui questões associadas."
+        );
+        return;
+      }
+
+      alert("Prova excluída com sucesso!");
       fetchProvas();
     } catch (err) {
-      alert("Erro ao excluir prova");
+      console.error("Erro inesperado ao excluir prova:", err);
+      alert("Erro inesperado ao excluir prova.");
     }
   };
 
