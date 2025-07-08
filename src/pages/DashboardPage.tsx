@@ -3,6 +3,7 @@ import { PageHeader } from "../ui/PageHeader";
 import { FiltroAvaliacoes } from "../components/FiltroAvaliacoes";
 import { DashboardResumo } from "../components/DashboardResumo";
 import { TabelaDesempenhoEscolas } from "../components/TabelaDesempenhoEscolas";
+import { GraficoDesempenhoAvaliacoes } from "../components/GraficoDesempenhoAvaliacoes";
 export const DashboardPage = () => {
   const handleExport = async () => {
     try {
@@ -51,6 +52,7 @@ export const DashboardPage = () => {
         />
         <DashboardResumo />
         <TabelaDesempenhoEscolas />
+        <GraficoDesempenhoAvaliacoes />
       </div>
     </>
   );
