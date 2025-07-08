@@ -4,16 +4,20 @@ import { FiltroAvaliacoes } from "../components/FiltroAvaliacoes";
 import { DashboardResumo } from "../components/DashboardResumo";
 import { TabelaDesempenhoEscolas } from "../components/TabelaDesempenhoEscolas";
 import { GraficoDesempenhoAvaliacoes } from "../components/GraficoDesempenhoAvaliacoes";
+import { GraficoComponentesCurriculares } from "../components/GraficoComponentesCurriculares";
 export const DashboardPage = () => {
   const handleExport = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/import-csv/import`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({}), 
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/import-csv/import`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({}),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Erro ao exportar arquivo");
@@ -53,6 +57,9 @@ export const DashboardPage = () => {
         <DashboardResumo />
         <TabelaDesempenhoEscolas />
         <GraficoDesempenhoAvaliacoes />
+        <div className="mt-6">
+          <GraficoComponentesCurriculares />
+        </div>
       </div>
     </>
   );
