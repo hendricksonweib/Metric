@@ -5,6 +5,8 @@ import { DashboardResumo } from "../components/DashboardResumo";
 import { TabelaDesempenhoEscolas } from "../components/TabelaDesempenhoEscolas";
 import { GraficoDesempenhoAvaliacoes } from "../components/GraficoDesempenhoAvaliacoes";
 import { GraficoComponentesCurriculares } from "../components/GraficoComponentesCurriculares";
+import { GraficoRankingRegioes } from "../components/GraficoRankingRegioes";
+
 export const DashboardPage = () => {
   const handleExport = async () => {
     try {
@@ -57,8 +59,9 @@ export const DashboardPage = () => {
         <DashboardResumo />
         <TabelaDesempenhoEscolas />
         <GraficoDesempenhoAvaliacoes />
-        <div className="mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
           <GraficoComponentesCurriculares />
+          <GraficoRankingRegioes />
         </div>
       </div>
     </>
