@@ -4,6 +4,7 @@ import { SelectGrupo } from "./selects/SelectGrupo";
 import { SelectEscola } from "./selects/SelectEscola";
 import { SelectSerie } from "./selects/SelectSerie";
 import { SelectTurma } from "./selects/SelectTurma";
+import { SelectResultado } from "./selects/SelectResultado";
 
 export const FiltroAvaliacoes = () => {
   const [regiaoId, setRegiaoId] = useState("");
@@ -21,6 +22,7 @@ export const FiltroAvaliacoes = () => {
         <SelectEscola regiaoId={regiaoId} grupoId={grupoId} value={escolaId} onChange={setEscolaId} />
         <SelectSerie escolaId={escolaId} value={serie} onChange={setSerie} />
         <SelectTurma escolaId={escolaId} serie={serie} value={turmaId} onChange={setTurmaId} />
+        <SelectResultado value="" onChange={() => {}} />
       </div>
     </div>
   );

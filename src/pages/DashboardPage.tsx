@@ -49,16 +49,20 @@ export const DashboardPage = () => {
           title="Dashboard"
           description="Visão geral do Sistema de Avaliação e Gerenciamento"
         />
-
-        <FiltroAvaliacoes />
-
-        <PageHeader
-          title="Exportar Dados"
-          description="Baixe todos os dados do dashboard em formato Excel"
-          actionLabel="Exportar Excel"
-          onActionClick={handleExport}
-        />
-        <DashboardResumo />
+        <div className="mt-8">
+          <FiltroAvaliacoes />
+        </div>
+        <div className="mt-8">
+          <PageHeader
+            title="Exportar Dados"
+            description="Baixe todos os dados do dashboard em formato Excel"
+            actionLabel="Exportar Excel"
+            onActionClick={handleExport}
+          />
+        </div>
+        <div className="mt-8">
+          <DashboardResumo />
+        </div>
         <TabelaDesempenhoEscolas />
         <GraficoDesempenhoAvaliacoes />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
