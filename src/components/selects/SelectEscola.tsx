@@ -16,7 +16,7 @@ export const SelectEscola = ({ regiaoId, grupoId, value, onChange }: Props) => {
   const [escolas, setEscolas] = useState<Escola[]>([]);
 
   useEffect(() => {
-    let url = `${import.meta.env.VITE_API_URL}/api/escolas`;
+    let url = `${import.meta.env.VITE_API_URL}/api/escolas?page=1&limit=200`;
 
     const params = new URLSearchParams();
     if (regiaoId) params.append("regiao_id", regiaoId);
