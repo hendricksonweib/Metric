@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useFiltroDashboard } from "../hooks/useFiltroDashboard";
 
 interface Aluno {
   aluno_id: number;
@@ -30,17 +31,34 @@ export const RankingAlunos = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
+  const { filtros } = useFiltroDashboard();
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/dashboard/student-ranking?page=${page}&limit=20`)
-      .then((res) => res.json())
-      .then((json: ApiResponse) => {
+    const fetchData = async () => {
+      try {
+        const params = new URLSearchParams();
+        params.append("page", page.toString());
+        params.append("limit", "20");
+
+        if (filtros.regiaoId) params.append("regiao_id", filtros.regiaoId);
+        if (filtros.grupoId) params.append("grupo_id", filtros.grupoId);
+        if (filtros.escolaId) params.append("escola_id", filtros.escolaId);
+        if (filtros.serie) params.append("serie", filtros.serie);
+        if (filtros.turmaId) params.append("turma_id", filtros.turmaId);
+
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/dashboard/student-ranking?${params.toString()}`);
+        const json: ApiResponse = await res.json();
+
         setAlunos(json.data);
         setTotalPages(json.totalPages);
         setTotal(json.total);
-      })
-      .catch(console.error);
-  }, [page]);
+      } catch (err) {
+        console.error("Erro ao buscar ranking de alunos:", err);
+      }
+    };
+
+    fetchData();
+  }, [page, filtros]);
 
   const renderPagination = () => {
     const buttons = [];
