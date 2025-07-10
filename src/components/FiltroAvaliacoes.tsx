@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useFiltroDashboard } from "../hooks/useFiltroDashboard";
 import { SelectRegiao } from "./selects/SelectRegiao";
 import { SelectGrupo } from "./selects/SelectGrupo";
 import { SelectEscola } from "./selects/SelectEscola";
@@ -13,6 +14,12 @@ export const FiltroAvaliacoes = () => {
   const [serie, setSerie] = useState("");
   const [turmaId, setTurmaId] = useState("");
 
+  const { setFiltros } = useFiltroDashboard();
+
+  const handleAplicarFiltros = () => {
+    setFiltros({ regiaoId, grupoId, escolaId, serie, turmaId });
+  };
+
   return (
     <div className="bg-white p-6 rounded-xl shadow-md space-y-4">
       <h3 className="text-lg font-semibold mb-2">Filtro de Avaliações</h3>
@@ -23,6 +30,14 @@ export const FiltroAvaliacoes = () => {
         <SelectSerie escolaId={escolaId} value={serie} onChange={setSerie} />
         <SelectTurma escolaId={escolaId} serie={serie} value={turmaId} onChange={setTurmaId} />
         <SelectResultado value="" onChange={() => {}} />
+      </div>
+      <div className="flex justify-end">
+        <button
+          onClick={handleAplicarFiltros}
+          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Aplicar Filtros
+        </button>
       </div>
     </div>
   );
