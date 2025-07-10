@@ -10,6 +10,7 @@ import {
 } from "chart.js";
 
 import { Bar } from "react-chartjs-2";
+import { useFiltroDashboard } from "../hooks/useFiltroDashboard";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -20,17 +21,32 @@ interface DesempenhoProva {
 }
 
 export const GraficoDesempenhoAvaliacoes = () => {
+  const { filtros } = useFiltroDashboard();
   const [dados, setDados] = useState<DesempenhoProva[]>([]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/dashboard/provas-desempenho`)
+    const params = new URLSearchParams();
+
+    if (filtros.regiaoId) params.append("regiao_id", filtros.regiaoId);
+    if (filtros.grupoId) params.append("grupo_id", filtros.grupoId);
+    if (filtros.escolaId) params.append("escola_id", filtros.escolaId);
+    if (filtros.serie) params.append("serie", filtros.serie);
+    if (filtros.turmaId) params.append("turma_id", filtros.turmaId);
+
+    fetch(`${import.meta.env.VITE_API_URL}/api/dashboard/provas-desempenho?${params.toString()}`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
           setDados(data);
+        } else {
+          setDados([]);
         }
+      })
+      .catch((err) => {
+        console.error("Erro ao carregar dados do gráfico:", err);
+        setDados([]);
       });
-  }, []);
+  }, [filtros]);
 
   const chartData = {
     labels: dados.map((item) => item.prova_nome),
@@ -38,7 +54,7 @@ export const GraficoDesempenhoAvaliacoes = () => {
       {
         label: "Percentual de Acertos (%)",
         data: dados.map((item) => item.percentual_acertos),
-        backgroundColor: "rgba(139, 92, 246, 0.5)", // lilás suave
+        backgroundColor: "rgba(139, 92, 246, 0.5)",
         borderColor: "rgba(139, 92, 246, 1)",
         borderWidth: 1,
       },
@@ -77,8 +93,14 @@ export const GraficoDesempenhoAvaliacoes = () => {
 
   return (
     <div className="bg-white p-6 rounded-xl shadow mt-6">
-      <h2 className="text-lg font-semibold mb-4">Notas Médias por Avaliação</h2>
-      <Bar data={chartData} options={options} />
+      <h2 className="text-lg font-semibold mb-4 text-gray-800">
+        Notas Médias por Avaliação
+      </h2>
+      {dados.length === 0 ? (
+        <p className="text-gray-500 text-sm">Nenhum dado encontrado com os filtros aplicados.</p>
+      ) : (
+        <Bar data={chartData} options={options} />
+      )}
     </div>
   );
 };
