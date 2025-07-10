@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useFiltroDashboard } from "../hooks/useFiltroDashboard";
 
 interface Habilidade {
   bncc_id: number;
@@ -9,7 +10,7 @@ interface Habilidade {
   total_questoes: number;
   total_respostas: number;
   total_acertos: number;
-  percentual_acertos: number | string; // pode vir como string
+  percentual_acertos: number | string;
 }
 
 interface ApiResponse {
@@ -26,17 +27,34 @@ export const TabelaHabilidadesBNCC = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
   const [selecionada, setSelecionada] = useState<Habilidade | null>(null);
+  const { filtros } = useFiltroDashboard();
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/dashboard/bncc-skills?page=${page}&limit=20`)
-      .then(res => res.json())
-      .then((json: ApiResponse) => {
+    const fetchData = async () => {
+      try {
+        const params = new URLSearchParams();
+        params.append("page", page.toString());
+        params.append("limit", "20");
+
+        if (filtros.regiaoId) params.append("regiao_id", filtros.regiaoId);
+        if (filtros.grupoId) params.append("grupo_id", filtros.grupoId);
+        if (filtros.escolaId) params.append("escola_id", filtros.escolaId);
+        if (filtros.serie) params.append("serie", filtros.serie);
+        if (filtros.turmaId) params.append("turma_id", filtros.turmaId);
+
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/dashboard/bncc-skills?${params.toString()}`);
+        const json: ApiResponse = await res.json();
+
         setHabilidades(json.data);
         setTotalPages(json.totalPages);
         setTotal(json.total);
-      })
-      .catch(console.error);
-  }, [page]);
+      } catch (err) {
+        console.error("Erro ao buscar habilidades BNCC:", err);
+      }
+    };
+
+    fetchData();
+  }, [page, filtros]);
 
   return (
     <div className="p-6 bg-white rounded-xl shadow-md">
@@ -97,11 +115,7 @@ export const TabelaHabilidadesBNCC = () => {
 
       {selecionada && (
         <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-50">
-          <div
-            className="bg-white rounded-xl p-6 w-full max-w-lg shadow-lg"
-            role="dialog"
-            aria-modal="true"
-          >
+          <div className="bg-white rounded-xl p-6 w-full max-w-lg shadow-lg" role="dialog" aria-modal="true">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">{selecionada.bncc_codigo}</h3>
               <button
