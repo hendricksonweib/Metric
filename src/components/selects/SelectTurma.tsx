@@ -29,16 +29,18 @@ export const SelectTurma = ({ escolaId, serie, value, onChange }: Props) => {
       serie: serie,
     });
 
-    const url = `${import.meta.env.VITE_API_URL}/api/turmas?${params.toString()}`;
+    const url = `${
+      import.meta.env.VITE_API_URL
+    }/api/turmas?${params.toString()}`;
 
     fetch(url)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         console.log("Turmas carregadas:", data);
         const lista = Array.isArray(data?.data) ? data.data : [];
         setTurmas(lista);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Erro ao carregar turmas:", err);
         setTurmas([]);
       });
@@ -48,9 +50,9 @@ export const SelectTurma = ({ escolaId, serie, value, onChange }: Props) => {
     <div>
       <label className="text-sm text-gray-600 mb-1 block">Turma</label>
       <select
-        className="w-full border px-3 py-2 rounded"
+        className="w-full border border-gray-300 px-3 py-2 rounded-lg bg-white text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
         value={value}
-        onChange={e => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
         disabled={!turmas.length}
       >
         <option value="">Selecione uma turma</option>
